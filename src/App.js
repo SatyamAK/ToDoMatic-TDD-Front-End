@@ -1,10 +1,10 @@
 import './App.css';
-import Button from './components/button/button';
+import TextFormField from './components/text-form-field';
 
 function App() {
   return (
     <div className="App">
-      <Button title = "hello" class="secondary"/>
+      <TextFormField placeholder = 'What will you do today?' />
     </div>
   );
 }
