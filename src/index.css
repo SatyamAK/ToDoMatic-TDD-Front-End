@@ -7,6 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   background-color: var(--backgroundColor);
+  color: var(--textColor);
 }
 
 code {
