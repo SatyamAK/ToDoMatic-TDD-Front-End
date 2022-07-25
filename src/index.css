@@ -5,9 +5,26 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  background-color: var(--backgroundColor);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+:root{
+  --backgroundColor: #000;
+  --primaryColor: #00838F;
+  --secondaryColor: #FFF;
+  --textColor: #FFF;
+  --accentColor: #B00020;
+  --spacing: 8px;
+  --spacingLarge: 16px;
+  --spacingExtraLarge: 32px;
+  --heading: 1.2rem;
+  --subHeading: 1rem;
+  --title: 0.8rem;
+  --butonText: 1rem;
 }
