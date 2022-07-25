@@ -1,0 +1,23 @@
+input.text-form-field{
+    display: block;
+    margin: 0 auto;
+    width: 35%;
+    height: 48px;
+    padding: 0 var(--spacing);
+    font-size: 1.0rem;
+}
+
+input.text-form-field:placeholder-shown{
+    text-align: center;
+}
+
+input.text-form-field:focus{
+    outline: 2px solid var(--primaryColor);
+}
+
+@media screen and (max-width:800px) {
+    input.text-form-field{
+        width: 80%;
+        height: 48px;
+    }
+}
