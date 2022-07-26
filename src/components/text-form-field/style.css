@@ -12,7 +12,7 @@ input.text-form-field:placeholder-shown{
 }
 
 input.text-form-field:focus{
-    outline: 2px solid var(--primaryColor);
+    outline: 2px solid var(--primary-color);
 }
 
 @media screen and (max-width:800px) {
