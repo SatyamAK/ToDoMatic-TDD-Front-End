@@ -1,0 +1,14 @@
+.authentication-form{
+    display: inline-block;
+    width: 80%;
+}
+
+Button{
+    display: block;
+}
+
+@media screen and (max-width:800px){
+    .authentication-form{ 
+        width: 80%;
+    }
+}

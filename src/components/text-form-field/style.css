@@ -1,6 +1,6 @@
 input.text-form-field{
     display: block;
-    margin: 0 auto;
+    margin: var(--spacing) auto;
     width: 35%;
     height: 48px;
     padding: 0 var(--spacing);

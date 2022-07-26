@@ -20,13 +20,13 @@ export default function AuthenticationForm(props){
             <h1>If you are new user please use register button</h1>
 
             <div className='input-fields'>
-                <TextFormField placeholder = 'Username' type="text" value={username} onChange = {onChangeLogin} />
-                <TextFormField placeholder = 'Password' type="text" value={password} onChange ={onChangePassword} />
+                <TextFormField placeholder = 'Username' type="text" value={username} onChange = {onChangeLogin} className="text-field"/>
+                <TextFormField placeholder = 'Password' type="text" value={password} onChange ={onChangePassword} className="text-field"/>
             </div>
 
             <div className='button-container'>
-                <Button title='Login' />
-                <Button title='Register' />
+                <Button title='Login' class='primary'/>
+                <Button title='Register' class='secondary'/>
             </div>
         </form>
     )
