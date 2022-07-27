@@ -55,4 +55,18 @@ describe('Authentication Form test', ()=> {
         userEvent.type(screen.getByPlaceholderText('Password'), 'hello')
         expect(screen.getByPlaceholderText('Password')).toHaveValue('hello')
     })
+
+    test('Login without username and password gives error or not', ()=>{
+        render(<AuthenticationForm />)
+        userEvent.click(screen.getByText('Login'))
+        expect(screen.getByText('Username cannot be empty')).toBeInTheDocument()
+        expect(screen.getByText('Password cannot be empty')).toBeInTheDocument()
+    })
+
+    test('Registration without username and password gives error or not', ()=>{
+        render(<AuthenticationForm />)
+        userEvent.click(screen.getByText('Register'))
+        expect(screen.getByText('Username cannot be empty')).toBeInTheDocument()
+        expect(screen.getByText('Password cannot be empty')).toBeInTheDocument()
+    })
 })

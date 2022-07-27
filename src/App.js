@@ -10,7 +10,7 @@ function App() {
 
   let tempTask = [ new Task('testing', true, 1) ]
 
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [user, setUser] = useState(new User('test', tempTask))
 
   const state = {
