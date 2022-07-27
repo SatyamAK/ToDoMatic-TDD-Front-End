@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import './App.css';
 import { AppContext } from './contexts/app.context';
 import AuthenticationForm from './authentication-form'
-import Button from './components/button';
+import Task from './models/task.model';
+import TaskList from './task/task-list';
 
 function App() {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
 
   return (
     <div className="App">
@@ -21,9 +22,9 @@ function App() {
 export function Wrapper() {
 
   const isLoggedIn = React.useContext(AppContext)
-
+  let tempTask = [ new Task('testing', true, 1) ]
   return(
-    (isLoggedIn)?<Button title ='Logout' />:<AuthenticationForm />
+    (isLoggedIn)?<TaskList taskList = {tempTask}/>:<AuthenticationForm />
   )
 }
 export default App;

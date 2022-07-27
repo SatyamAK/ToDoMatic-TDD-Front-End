@@ -1,0 +1,60 @@
+import './style.css';
+import Button from '../../components/button'
+import { useState } from 'react';
+
+export default function TaskItem(props){
+
+    const [taskName, setTaskName] = useState("")
+
+    const editContainer = (
+        <form className='edit-container' onSubmit= {handleSubmit}>
+            <input type="text" 
+                value={taskName} 
+                onChange = {changeHandler}
+                placeholder={'What will be the new name of '+props.task.title} 
+                onSubmit = {handleSubmit}
+            />
+            <Button title="Save" type = "submit" onClick={null} class="primary"/>
+            <Button title="Cancel" onClick={()=> setEditing(-1)} class="secondary"/>
+        </form>
+    );
+
+    const buttonsContainer = (
+        <div className='buttons-container'>
+            <Button title="Edit" type = "button" onClick = {() => setEditing(props.task.id)} class="primary"/>
+            <Button title="Delete" onClick={()=> props.delTask(props.task.id)} class="secondary"/>
+        </div>
+    );
+
+    function onChange(taskId){
+        props.toggleTaskDoneOrNot(taskId)
+    }
+
+    function setEditing(taskId){
+        props.toggleTaskEdit(taskId)
+    }
+
+    function changeHandler(event){
+        setTaskName(event.target.value)
+    }
+
+    function handleSubmit(event){
+        event.preventDefault();
+
+        if(taskName === "") return
+
+        props.editATask(props.taskIdToBeUpdated, taskName)
+        setTaskName("")
+        setEditing(-1)
+    }
+
+    return(
+        <div className='task-card'>
+            <div className='task-status'>
+                <input type="checkbox" checked={props.task.isDone} onChange={() => onChange(props.task.id)}></input>
+                <div className='task-name'>{props.task.title}</div>
+            </div>
+            { (props.taskIdToBeUpdated === props.task.id)?editContainer:buttonsContainer }
+        </div>
+    );
+}

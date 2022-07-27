@@ -17,7 +17,7 @@ export default function AuthenticationForm(props){
 
     return (
         <form className='authentication-form'>
-            <h1>If you are new user please use register button</h1>
+            <h3>If you are new user please use register button</h3>
 
             <div className='input-fields'>
                 <TextFormField placeholder = 'Username' type="text" value={username} onChange = {onChangeLogin} className="text-field"/>

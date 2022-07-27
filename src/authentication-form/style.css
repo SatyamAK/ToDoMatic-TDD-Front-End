@@ -1,6 +1,10 @@
 .authentication-form{
     display: inline-block;
-    width: 80%;
+    width: 35%;
+}
+
+.authentication-form .text-form-field{
+    margin-bottom: var(--spacing);
 }
 
 Button{
@@ -9,6 +13,6 @@ Button{
 
 @media screen and (max-width:800px){
     .authentication-form{ 
-        width: 80%;
+        width: 100%;
     }
 }

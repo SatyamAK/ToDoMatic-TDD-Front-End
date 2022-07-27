@@ -1,6 +1,6 @@
 button{
     display: inline-block;
-    width: 35%;
+    width: 80%;
     height: 36px;
     margin: var(--spacing) auto;
     padding: 0 var(--spacing);
