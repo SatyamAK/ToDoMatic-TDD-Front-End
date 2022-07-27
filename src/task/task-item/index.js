@@ -1,5 +1,6 @@
 import './style.css';
 import Button from '../../components/button'
+import TextFormField from '../../components/text-form-field';
 import { useState } from 'react';
 
 export default function TaskItem(props){
@@ -8,11 +9,11 @@ export default function TaskItem(props){
 
     const editContainer = (
         <form className='edit-container' onSubmit= {handleSubmit}>
-            <input type="text" 
+            <TextFormField 
+                type="text"
+                placeholder={"What will be the new name of "+props.task.title}
                 value={taskName} 
-                onChange = {changeHandler}
-                placeholder={'What will be the new name of '+props.task.title} 
-                onSubmit = {handleSubmit}
+                onChange={changeHandler}
             />
             <Button title="Save" type = "submit" onClick={null} class="primary"/>
             <Button title="Cancel" onClick={()=> setEditing(-1)} class="secondary"/>

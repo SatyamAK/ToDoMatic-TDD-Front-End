@@ -1,0 +1,38 @@
+.tabs{
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+}
+.tab, .tab-active{
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+    margin: var(--spacing-extra-large) var(--spacing-large);
+    color: var(--text-color);
+    font-size: var(--button-text);
+    border-bottom: 4px solid var(--secondary-color);
+}
+
+.tab-active{
+    border-bottom: 4px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.task-view{
+    width: 65%;
+    margin: 0 auto;
+}
+
+.task-form{
+    width: 100%;
+}
+
+@media screen and (max-width:850px) {
+    .tab, .tab-active{
+        margin: var(--spacing) var(--spacing);
+    }
+
+    .task-view{
+        width: 100%;
+    }
+}
