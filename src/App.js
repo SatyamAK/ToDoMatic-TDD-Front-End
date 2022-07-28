@@ -9,6 +9,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [user, setUser] = useState()
   const [tasks, setTasks] = useState([])
+  const [allTasks, setALLTasks] = useState([])
   const [token, setToken] = useState("") /*Storing token as normal variable is not good practise, should be stored it in 
                                                 secure storage or something, since I am foxuinf on tdd I will not be storing it
                                                 for presistence login*/
@@ -19,7 +20,9 @@ function App() {
     'setUser': setUser,
     'setLoggedIn': setIsLoggedIn,
     'tasks': tasks,
+    "allTasks": allTasks,
     'setTasks': setTasks,
+    "setAllTasks": setALLTasks,
     'token': token,
     'setToken': setToken
   }

@@ -19,8 +19,14 @@ export default function TaskView(){
         if(tabName === selectedTab){
             return <div className='tab-active' key={key}>{tabName}</div>
         }
-        return <div className='tab' key={key} onClick={()=>setSelectedTab(tabName)}>{tabName}</div>
+        return <div className='tab' key={key} onClick={()=>filterTasks(tabName)}>{tabName}</div>
     })
+
+    function setEveryTasks(tasks){
+        state.setAllTasks(tasks)
+        state.setTasks(tasks)
+        setSelectedTab("All")
+    }
 
     function handleSubmit(event){
 
@@ -58,7 +64,7 @@ export default function TaskView(){
                 updatedTasks.push(new Task(task.title, task.done, task.id))
             })
 
-            state.setTasks(updatedTasks)
+            setEveryTasks(updatedTasks)
         }).catch(err => {
             console.log(err)
         })
@@ -100,7 +106,7 @@ export default function TaskView(){
                 updatedTasks.push(new Task(task.title, task.done, task.id))
             })
 
-            state.setTasks(updatedTasks)
+            setEveryTasks(updatedTasks)
         }).catch(err => {
             console.log(err)
         })
@@ -138,7 +144,7 @@ export default function TaskView(){
                 updatedTasks.push(new Task(task.title, task.done, task.id))
             })
 
-            state.setTasks(updatedTasks)
+            setEveryTasks(updatedTasks)
         }).catch(err => {
             console.log(err)
         })
@@ -168,10 +174,28 @@ export default function TaskView(){
                 updatedTasks.push(new Task(task.title, task.done, task.id))
             })
 
-            state.setTasks(updatedTasks)
+            setEveryTasks(updatedTasks)
         }).catch(err => {
             console.log(err)
         })
+    }
+
+    function filterTasks(tabname){
+
+        setSelectedTab(tabname)
+        if(tabname === "Active"){
+            let filteredTasks = state.allTasks.filter((task) => !task.done)
+            state.setTasks(filteredTasks)
+        }
+
+        if(tabname === "Completed"){
+            let filteredTasks = state.allTasks.filter((task) => task.done)
+            state.setTasks(filteredTasks)
+        }
+
+        if(tabname === "All"){
+            state.setTasks(state.allTasks)
+        }
     }
 
     useEffect(()=>{
@@ -195,7 +219,7 @@ export default function TaskView(){
                 tasks.push(new Task(task.title, task.done, task.id))
             })
 
-            state.setTasks(tasks)
+            setEveryTasks(tasks)
         }).catch(err => {
             console.log(err)
         })

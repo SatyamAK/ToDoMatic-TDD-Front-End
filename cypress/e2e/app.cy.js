@@ -85,7 +85,7 @@ describe('End to End testing for entire app - authorizing user - unsuccess', ()=
 describe('task management tests', ()=>{
 
     beforeEach(()=> {
-        let token, username, tasks
+        let username, tasks, token
     
         cy.visit("/")
 
@@ -202,5 +202,112 @@ describe('task management tests', ()=>{
 
         cy.contains('Testing Again').parent().parent().find('.accent').click()
         cy.contains('Testing Again').should('not.exist')
+    })
+})
+
+describe('Testing filtering of tasks based on selected tabs', () =>{
+
+    beforeEach(()=> {
+        let username, tasks, token
+    
+        cy.visit("/")
+
+        cy.intercept({
+            method: 'POST',
+            url: '/auth/login'
+        }, user).as('login')
+
+        token = "Bearer Something"
+        username = user.username
+        tasks = user.tasks
+        
+        cy.intercept({
+            method: 'GET',
+            url: '/getAllTasks?username='+username,
+        }, JSON.stringify({"tasks": user.tasks})).as('getAll')
+
+        cy.get('input[placeholder="Username"]').type("tsting")
+        cy.get('input[placeholder="Password"]').type("password")
+        cy.get('.primary').click()
+    })
+
+    it('Getting Active tasks', ()=>{
+
+        cy.wait('@login')
+        cy.wait('@getAll')
+        cy.contains('Active').click()
+        cy.contains('refactoring')
+    })
+
+    it('Getting back from other tab to All tabs should rendder all tasks again', ()=>{
+
+        cy.wait('@login')
+        cy.wait('@getAll')
+        cy.contains('Active').click()
+        cy.contains('All').click()
+        cy.contains(user.tasks[0].title)
+        cy.contains(user.tasks[1].title)
+        cy.contains(user.tasks[2].title)
+        cy.contains(user.tasks[3].title)
+    })
+
+    it('Getting completed tasks', ()=>{
+
+        cy.wait('@login')
+        cy.wait('@getAll')
+        cy.contains('Completed').click()
+        cy.contains('Refactoring').should('not.exist')
+    })
+
+    it('Editing task should switch back to all', ()=>{
+
+        cy.wait('@login')
+        cy.wait('@getAll')
+
+        cy.contains('Completed').click()
+        cy.contains('eating').parent().parent().find('.secondary').click()
+
+        cy.intercept({
+            method: 'PUT',
+            url: '/updateTask?username='+user.username,
+        }, JSON.stringify({"updated_tasks": user.tasks})).as('edit')
+
+        cy.get('input[placeholder="What will be the new name of eating"]').type('Eating more{enter}')
+        cy.wait('@edit')
+        cy.get('.tab-active').contains('All')
+    })
+
+    it('Togling a task should switch back to all', ()=>{
+
+        cy.wait('@login')
+        cy.wait('@getAll')
+
+        cy.contains('Completed').click()
+
+        cy.intercept({
+            method: 'PUT',
+            url: '/updateTask?username='+user.username,
+        }, JSON.stringify({"updated_tasks": user.tasks})).as('edit')
+
+        cy.contains('eating').parent().find('input[type="checkbox"]').click()
+        cy.wait('@edit')
+        cy.get('.tab-active').wait(500).contains('All')
+    })
+
+    it('Deleting a task should switch back to all', ()=>{
+
+        cy.wait('@login')
+        cy.wait('@getAll')
+
+        cy.contains('Completed').click()
+
+        cy.intercept({
+            method: 'DELETE',
+            url: '/deleteTask?username='+user.username+'&taskId='+1,
+        }, JSON.stringify({"updated_tasks": user.tasks})).as('delete')
+
+        cy.contains('eating').parent().parent().find('.accent').click()
+        cy.wait('@delete')
+        cy.get('.tab-active').wait(500).contains('All')
     })
 })
