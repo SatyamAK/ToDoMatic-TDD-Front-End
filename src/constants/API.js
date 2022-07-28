@@ -3,6 +3,7 @@ const AUTH = BASE_URL+'auth/'
 const LOGIN = AUTH+'login'
 const REGISTER = AUTH+'register'
 const GETALLTASKS = BASE_URL+'getAllTasks'
+const ADDTASK = BASE_URL+'addTask'
 const EDITTASK = BASE_URL+'updateTask'
 const DELETETASK = BASE_URL+'deleteTask'
 
@@ -12,6 +13,7 @@ const urls = {
     LOGIN,
     REGISTER,
     GETALLTASKS,
+    ADDTASK,
     EDITTASK,
     DELETETASK
 }

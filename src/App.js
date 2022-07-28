@@ -2,13 +2,9 @@ import React, { useState } from 'react';
 import './App.css';
 import { AppContext } from './contexts/app.context';
 import AuthenticationForm from './authentication-form'
-import Task from './models/task.model';
-import User from './models/user.model';
 import TaskView from './task';
 
 function App() {
-
-  let tempTask = [ new Task('testing', true, 1) ]
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [user, setUser] = useState()

@@ -1,3 +1,4 @@
+import Task from '../../src/models/task.model'
 import user from '../fixtures/user-mock.json'
 
 describe('End to End testing for entire app - authorizing user -success', ()=>{
@@ -101,18 +102,105 @@ describe('task management tests', ()=>{
             method: 'GET',
             url: '/getAllTasks?username='+username,
         }, JSON.stringify({"tasks": user.tasks})).as('getAll')
-    })
-
-    it('AUthenticated user should be able to see all the tasks', ()=>{
 
         cy.get('input[placeholder="Username"]').type("tsting")
         cy.get('input[placeholder="Password"]').type("password")
         cy.get('.primary').click()
+    })
+
+    it('AUthenticated user should be able to see all the tasks', ()=>{
+
         cy.wait('@login')
         cy.wait('@getAll')
         cy.contains(user.tasks[0].title)
         cy.contains(user.tasks[1].title)
         cy.contains(user.tasks[2].title)
         cy.contains(user.tasks[3].title)
+    })
+
+    it('AUthenticated user should be able to add new task', ()=>{
+
+        cy.wait('@login')
+        cy.wait('@getAll')
+    
+        let updated_tasks = user.tasks
+        updated_tasks.push(new Task('Testing Again', false, 5))
+        cy.intercept({
+            method: 'POST',
+            url: '/addTask?username='+user.username,
+        }, JSON.stringify({"updated_tasks": user.tasks})).as('addNewTask')
+
+        cy.get('input[placeholder="What needs to be done?"]').type("new task{enter}")
+        cy.contains('Testing Again')
+    })
+
+    it('AUthenticated user should be able to edit task', ()=>{
+
+        cy.wait('@login')
+        cy.wait('@getAll')
+
+        cy.contains('eating').parent().parent().find('.secondary').click()
+
+        let updatedTasks = user.tasks
+        updatedTasks[0].title = 'Eating More'
+        cy.intercept({
+            method: 'PUT',
+            url: '/updateTask?username='+user.username,
+        }, JSON.stringify({"updated_tasks": updatedTasks})).as('edit')
+
+        cy.get('input[placeholder="What will be the new name of eating"]').type('Eating more{enter}')
+        cy.contains('Eating More')
+    })
+
+    it('AUthenticated user should be able to edit task by clicking on save', ()=>{
+
+        
+        cy.contains('Eating More').parent().parent().find('.secondary').click()
+
+        let updatedTasks = user.tasks
+        updatedTasks[0].title = 'eating'
+
+        cy.intercept({
+            method: 'PUT',
+            url: '/updateTask?username='+user.username,
+        }, JSON.stringify({"updated_tasks": updatedTasks})).as('edit')
+
+        cy.get('input[placeholder="What will be the new name of Eating More"]').type('eating')
+        cy.get('.edit-container .secondary').click()
+        cy.contains('eating')
+    })
+
+    it('AUthenticated user should be able to toggle task done or not done', ()=>{
+
+        cy.wait('@login')
+        cy.wait('@getAll')
+
+        let updatedTasks = user.tasks
+        updatedTasks[4].done = true
+
+        cy.intercept({
+            method: 'PUT',
+            url: '/updateTask?username='+user.username,
+        }, JSON.stringify({"updated_tasks": updatedTasks})).as('toggle')
+
+        cy.contains('Testing Again').parent().find('input[type="checkbox"]').click()
+        cy.contains('Testing Again').parent().find('input[type="checkbox"]').should('be.checked')
+    })
+
+    it('AUthenticated user should be able to delete task', ()=>{
+
+        cy.wait('@login')
+        cy.wait('@getAll')
+
+        let updatedTasks = user.tasks
+        updatedTasks.pop()
+
+        cy.intercept({
+            method: 'DELETE',
+            url: '/deleteTask?username='+user.username+'&taskId='+5,
+        }, JSON.stringify({"updated_tasks": updatedTasks})).as('delete')
+
+        cy.contains('Testing Again').parent().parent().find('.accent').click()
+        cy.contains('Testing Again').should('not.exist')
     })
 })

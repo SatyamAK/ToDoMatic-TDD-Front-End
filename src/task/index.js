@@ -28,8 +28,41 @@ export default function TaskView(){
             event.preventDefault()
             return
         }
-
         event.preventDefault()
+
+        let newTask ={
+            "title": name,
+            "done": false
+        }
+
+        fetch(urls.ADDTASK+'?username='+state.user.username, {
+            mode: 'cors',
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ state.token
+            },
+            body: JSON.stringify(newTask)
+        }).then(async response => {
+
+            
+            let data = await response.json()
+
+            if(!response.ok){
+                const error = data
+                return Promise.reject(error)
+            }
+
+            let updatedTasks = []
+            data.updated_tasks.map(task=>{
+                updatedTasks.push(new Task(task.title, task.done, task.id))
+            })
+
+            state.setTasks(updatedTasks)
+        }).catch(err => {
+            console.log(err)
+        })
+
         setName("")
     }
 
@@ -37,8 +70,113 @@ export default function TaskView(){
         setName(event.target.value)
     }
 
+    function editATaskName(id, name){
+        let newTask ={
+            "id": id,
+            "title": name,
+            "done": state.tasks[id-1].done
+        }
+
+        fetch(urls.EDITTASK+'?username='+state.user.username, {
+            mode: 'cors',
+            method: 'PUT',
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ state.token
+            },
+            body: JSON.stringify(newTask)
+        }).then(async response => {
+
+            
+            let data = await response.json()
+
+            if(!response.ok){
+                const error = data
+                return Promise.reject(error)
+            }
+
+            let updatedTasks = []
+            data.updated_tasks.map(task=>{
+                updatedTasks.push(new Task(task.title, task.done, task.id))
+            })
+
+            state.setTasks(updatedTasks)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    function toggleTaskDoneOrNot(id){
+        let status = !state.tasks[id-1].done
+
+        let newTask ={
+            "id": id,
+            "title": state.tasks[id-1].title,
+            "done": status
+        }
+
+        fetch(urls.EDITTASK+'?username='+state.user.username, {
+            mode: 'cors',
+            method: 'PUT',
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ state.token
+            },
+            body: JSON.stringify(newTask)
+        }).then(async response => {
+
+            
+            let data = await response.json()
+
+            if(!response.ok){
+                const error = data
+                return Promise.reject(error)
+            }
+
+            let updatedTasks = []
+            data.updated_tasks.map(task=>{
+                updatedTasks.push(new Task(task.title, task.done, task.id))
+            })
+
+            state.setTasks(updatedTasks)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    function deleteTask(id){
+    
+        fetch(urls.DELETETASK+'?username='+state.user.username+'&taskId='+id, {
+            mode: 'cors',
+            method: 'DELETE',
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ state.token
+            }
+        }).then(async response => {
+
+            
+            let data = await response.json()
+
+            if(!response.ok){
+                const error = data
+                return Promise.reject(error)
+            }
+
+            let updatedTasks = []
+            data.updated_tasks.map(task=>{
+                updatedTasks.push(new Task(task.title, task.done, task.id))
+            })
+
+            state.setTasks(updatedTasks)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
     useEffect(()=>{
         fetch(urls.GETALLTASKS+'?username='+state.user.username, {
+            mode: 'cors',
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +191,7 @@ export default function TaskView(){
                 const error = data
                 return Promise.reject(error)
             }
-            data.tasks.map((task)=>{
+            data.tasks.map(task=>{
                 tasks.push(new Task(task.title, task.done, task.id))
             })
 
@@ -61,18 +199,19 @@ export default function TaskView(){
         }).catch(err => {
             console.log(err)
         })
-    })
+    }, [])
 
     let taskList = state.tasks
     return (
         <div className='task-view'>
             <h3>Welcome {state.user.username}</h3>
             <form className="task-form" onSubmit={handleSubmit}>
-                <TextFormField type="text"placeholder="What needs to be done?" value={name} onChange={handleChange}/>
+                <TextFormField type="text" placeholder="What needs to be done?" value={name} onChange={handleChange}/>
                 <Button title="Add" type="submit" onClick = {null} class="primary" />
             </form>
             <div className='tabs'>{ tabsUI } </div>
-            <TaskList taskList = {taskList} />
+            <TaskList taskList = {taskList} editATask = {editATaskName} toggleTaskDoneOrNot = {toggleTaskDoneOrNot}
+                delTask = {deleteTask}/>
         </div>
     );
 }

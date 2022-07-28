@@ -15,15 +15,15 @@ export default function TaskItem(props){
                 value={taskName} 
                 onChange={changeHandler}
             />
-            <Button title="Save" type = "submit" onClick={null} class="primary"/>
-            <Button title="Cancel" onClick={()=> setEditing(-1)} class="secondary"/>
+            <Button title="Save" type = "submit" onClick={handleSubmit} class="secondary"/>
+            <Button title="Cancel" onClick={()=> setEditing(-1)} class="accent"/>
         </form>
     );
 
     const buttonsContainer = (
         <div className='buttons-container'>
-            <Button title="Edit" type = "button" onClick = {() => setEditing(props.task.id)} class="primary"/>
-            <Button title="Delete" onClick={()=> props.delTask(props.task.id)} class="secondary"/>
+            <Button title="Edit" type = "button" onClick = {() => setEditing(props.task.id)} class="secondary"/>
+            <Button title="Delete" onClick={()=> props.delTask(props.task.id)} class="accent"/>
         </div>
     );
 

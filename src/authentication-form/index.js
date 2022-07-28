@@ -51,7 +51,7 @@ export default function AuthenticationForm(props){
     function handleSubmit(event){
         event.preventDefault()
         setFormErrors(validateForm)
-        if(username != "" && formErrors.password !=""){
+        if(username !== "" && formErrors.password !==""){
             let requestBody = {
                 "username": username,
                 "password": password
@@ -81,12 +81,12 @@ export default function AuthenticationForm(props){
         event.preventDefault()
         setFormErrors(validateForm)
 
-        if(username != "" && formErrors.password !=""){
+        if(username !== "" && formErrors.password !==""){
             let requestBody = {
                 "username": username,
                 "password": password
             }
-            console.log(urls.REGISTER)
+
             fetch(urls.REGISTER, {method: 'POST', body: JSON.stringify(requestBody), headers: { 'Content-Type': 'application/json' }})
             .then(async response => {
 
