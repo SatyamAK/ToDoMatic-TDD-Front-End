@@ -11,11 +11,21 @@ function App() {
   let tempTask = [ new Task('testing', true, 1) ]
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [user, setUser] = useState(new User('test', tempTask))
+  const [user, setUser] = useState()
+  const [tasks, setTasks] = useState([])
+  const [token, setToken] = useState("") /*Storing token as normal variable is not good practise, should be stored it in 
+                                                secure storage or something, since I am foxuinf on tdd I will not be storing it
+                                                for presistence login*/
 
   const state = {
     'user': user,
-    'loggedIn': isLoggedIn
+    'loggedIn': isLoggedIn,
+    'setUser': setUser,
+    'setLoggedIn': setIsLoggedIn,
+    'tasks': tasks,
+    'setTasks': setTasks,
+    'token': token,
+    'setToken': setToken
   }
 
   return (
@@ -32,7 +42,10 @@ export function Wrapper() {
 
   const state = React.useContext(AppContext)
   return(
-    (state.loggedIn)?<TaskView />:<AuthenticationForm />
+    (state.loggedIn)?<TaskView />:
+      <AuthenticationForm
+        user={state.user} setUser={state.setUser} 
+        setLoggedIn={state.setLoggedIn} setToken = {state.setToken}/>
   )
 }
 export default App;

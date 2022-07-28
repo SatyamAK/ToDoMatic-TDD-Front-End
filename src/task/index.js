@@ -2,8 +2,10 @@ import './style.css'
 import TextFormField from "../components/text-form-field";
 import Button from "../components/button";
 import TaskList from "./task-list";
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../contexts/app.context';
+import urls from '../constants/API';
+import Task from '../models/task.model';
 
 export default function TaskView(){
     
@@ -35,7 +37,33 @@ export default function TaskView(){
         setName(event.target.value)
     }
 
-    let taskList = state.user.tasks
+    useEffect(()=>{
+        fetch(urls.GETALLTASKS+'?username='+state.user.username, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ state.token
+            }
+        }).then(async response => {
+
+            let tasks = []
+            let data = await response.json()
+
+            if(!response.ok){
+                const error = data
+                return Promise.reject(error)
+            }
+            data.tasks.map((task)=>{
+                tasks.push(new Task(task.title, task.done, task.id))
+            })
+
+            state.setTasks(tasks)
+        }).catch(err => {
+            console.log(err)
+        })
+    })
+
+    let taskList = state.tasks
     return (
         <div className='task-view'>
             <h3>Welcome {state.user.username}</h3>

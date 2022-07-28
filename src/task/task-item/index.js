@@ -52,7 +52,7 @@ export default function TaskItem(props){
     return(
         <div className='task-card'>
             <div className='task-status'>
-                <input type="checkbox" checked={props.task.isDone} onChange={() => onChange(props.task.id)}></input>
+                <input type="checkbox" checked={props.task.done} onChange={() => onChange(props.task.id)}></input>
                 <div className='task-name'>{props.task.title}</div>
             </div>
             { (props.taskIdToBeUpdated === props.task.id)?editContainer:buttonsContainer }

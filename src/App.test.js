@@ -19,6 +19,7 @@ describe("App testing when user is not logged in", ()=>{
       </AppContext.Provider>
     )
 
-    expect(screen.getByText('If you are new user please use register button')).toBeInTheDocument()
+    expect(screen.getAllByText("Login")).toBeTruthy()
+    expect(screen.getByText('Register')).toBeInTheDocument()
   })
 })
